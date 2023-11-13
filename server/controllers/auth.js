@@ -52,12 +52,8 @@ export const login = async (req, res) => {
     if (!passwordCorrect) {
       return res.status(400).json({ msg: "Wrong email or password" });
     }
-    const token = jwt.sign(
-      {
-        id: existingUser._id,
-      },
-      process.env.JWT_SECRET
-    );
+      const token = jwt.sign({ id: existingUser._id, }, process.env.JWT_SECRET);
+      delete existingUser.password;
     res.status(200).json({
       token,
       user: existingUser,
