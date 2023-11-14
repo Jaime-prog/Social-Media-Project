@@ -8,13 +8,13 @@ import {
   useTheme,
 } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Formik } from "formik"; // Formik is a library that helps with forms
-import * as yup from "yup"; // yup is a library that helps with form validation
-import { useNavigate } from "react-router-dom"; // useNavigate is a hook that helps with navigation
-import { useDispatch } from "react-redux"; // useDispatch is a hook that helps with dispatching actions
-import { setLogin } from "state"; // setLogin is an action creator
-import Dropzone from "react-dropzone"; // Dropzone is a library that helps with uploading images
-import FlexBetween from "components/FlexBetween"; // FlexBetween is a component that helps with styling
+import { Formik } from "formik";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLogin } from "state";
+import Dropzone from "react-dropzone";
+import FlexBetween from "components/FlexBetween";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -49,8 +49,8 @@ const initialValuesLogin = {
 const Form = () => {
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
-  const dispatch = useDispatch(); // dispatch is a function that helps with dispatching actions
-  const navigate = useNavigate(); 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
@@ -124,21 +124,21 @@ const Form = () => {
             gap="30px"
             gridTemplateColumns="repeat(4, minmax(0, 1fr))"
             sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" }, //for mobile screens the entry fields will take the 4 spans of the grid
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
             {isRegister && (
               <>
                 <TextField
                   label="First Name"
-                  onBlur={handleBlur} // onBlur is an event that occurs when an element loses focus
-                  onChange={handleChange} // onChange is an event that occurs when the value of an element has been changed
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                   value={values.firstName}
                   name="firstName"
                   error={
-                    Boolean(touched.firstName) && Boolean(errors.firstName) // touched is a boolean that is true when the field has been touched
+                    Boolean(touched.firstName) && Boolean(errors.firstName)
                   }
-                  helperText={touched.firstName && errors.firstName} // helperText is the text that is displayed below the input field
+                  helperText={touched.firstName && errors.firstName}
                   sx={{ gridColumn: "span 2" }}
                 />
                 <TextField
@@ -186,10 +186,10 @@ const Form = () => {
                       setFieldValue("picture", acceptedFiles[0])
                     }
                   >
-                    {({ getRootProps, getInputProps }) => ( // getRootProps is a function that returns props to be applied to the root element
+                    {({ getRootProps, getInputProps }) => (
                       <Box
-                        {...getRootProps()} // something to do with dropzone to pass the props to the root element
-                        border={`2px dashed ${palette.primary.dark}`}
+                        {...getRootProps()}
+                        border={`2px dashed ${palette.primary.main}`}
                         p="1rem"
                         sx={{ "&:hover": { cursor: "pointer" } }}
                       >
