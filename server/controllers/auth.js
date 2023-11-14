@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-/*REGISTER USER */
+/* REGISTER USER */
 export const register = async (req, res) => {
   try {
     const {
@@ -16,7 +16,7 @@ export const register = async (req, res) => {
       occupation,
     } = req.body;
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
     const newUser = new User({
@@ -29,36 +29,29 @@ export const register = async (req, res) => {
       location,
       occupation,
       viewedProfile: Math.floor(Math.random() * 10000),
-      impressions: Math.floow(Math.random() * 10000),
+      impressions: Math.floor(Math.random() * 10000),
     });
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
+/* LOGGING IN */
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const existingUser = await User.findOne({ email: email });
-    if (!existingUser) {
-      return res.status(400).json({ msg: "Wrong email or password" });
-    }
-    const passwordCorrect = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
-    if (!passwordCorrect) {
-      return res.status(400).json({ msg: "Wrong email or password" });
-    }
-      const token = jwt.sign({ id: existingUser._id, }, process.env.JWT_SECRET);
-      delete existingUser.password;
-    res.status(200).json({
-      token,
-      user: existingUser,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const user = await User.findOne({ email: email });
+    if (!user) return res.status(400).json({ msg: "User does not exist. " });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    delete user.password;
+    res.status(200).json({ token, user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
