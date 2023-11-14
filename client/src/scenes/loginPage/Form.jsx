@@ -124,21 +124,21 @@ const Form = () => {
             gap="30px"
             gridTemplateColumns="repeat(4, minmax(0, 1fr))"
             sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" }, //for mobile screens the entry fields will take the 4 spans of the grid
             }}
           >
             {isRegister && (
               <>
                 <TextField
                   label="First Name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
+                  onBlur={handleBlur} // onBlur is an event that occurs when an element loses focus
+                  onChange={handleChange} // onChange is an event that occurs when the value of an element has been changed
                   value={values.firstName}
                   name="firstName"
                   error={
-                    Boolean(touched.firstName) && Boolean(errors.firstName)
+                    Boolean(touched.firstName) && Boolean(errors.firstName) // touched is a boolean that is true when the field has been touched
                   }
-                  helperText={touched.firstName && errors.firstName}
+                  helperText={touched.firstName && errors.firstName} // helperText is the text that is displayed below the input field
                   sx={{ gridColumn: "span 2" }}
                 />
                 <TextField
@@ -186,10 +186,10 @@ const Form = () => {
                       setFieldValue("picture", acceptedFiles[0])
                     }
                   >
-                    {({ getRootProps, getInputProps }) => (
+                    {({ getRootProps, getInputProps }) => ( // getRootProps is a function that returns props to be applied to the root element
                       <Box
-                        {...getRootProps()}
-                        border={`2px dashed ${palette.primary.main}`}
+                        {...getRootProps()} // something to do with dropzone to pass the props to the root element
+                        border={`2px dashed ${palette.primary.dark}`}
                         p="1rem"
                         sx={{ "&:hover": { cursor: "pointer" } }}
                       >
@@ -240,7 +240,7 @@ const Form = () => {
               sx={{
                 m: "2rem 0",
                 p: "1rem",
-                backgroundColor: palette.primary.main,
+                backgroundColor: palette.primary.dark,
                 color: palette.background.alt,
                 "&:hover": { color: palette.primary.main },
               }}
